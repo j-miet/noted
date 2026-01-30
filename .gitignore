@@ -1,0 +1,12 @@
+# Project extras (temporary, remove this later)
+noted-draft
+
+# vscode
+.vscode
+
+# Node
+node_modules
+
+# ASP.NET Core
+server/**/*/bin
+server/**/*/obj
