@@ -1,5 +1,7 @@
 # Project extras (temporary, remove this later)
 noted-draft
+noted.db
+**/*/Migrations
 
 # vscode
 .vscode
