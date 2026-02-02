@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NotedApi.Data;
 
 namespace NotedApi.Controllers;
 
@@ -6,19 +8,18 @@ namespace NotedApi.Controllers;
 [Route("api")]
 public class NotesController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetNote(int id)
-    {
-        // test data here; database will be added soon
-        var note = new
-        {
-            Id = id,
-            CanvasId = 2,
-            Text = "test",
-            X = 100,
-            Y = 100
-        };
+    private readonly NotedDbContext _db;
 
-        return Ok(note);
+    public NotesController(NotedDbContext db)
+    {
+        _db = db;
+    }
+
+    [HttpGet("[Controller]/{id}")]
+    public async Task<IActionResult> GetNote(int id)
+    {
+        var notes = await _db.Notes.Where(n => n.Id == id).FirstOrDefaultAsync();
+
+        return Ok(notes);
     }
 }
