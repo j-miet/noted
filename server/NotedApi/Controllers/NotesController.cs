@@ -5,6 +5,7 @@ using NotedApi.Features.Notes;
 
 namespace NotedApi.Controllers;
 
+// TODO clean up controllers by moving their logic under Features/Notes/NotesService.cs
 [ApiController]
 [Route("api")]
 public class NotesController : ControllerBase
@@ -19,7 +20,17 @@ public class NotesController : ControllerBase
     [HttpGet("canvas/{canvasId}/notes")]
     public async Task<IActionResult> GetNotesByCanvasId(int canvasId)
     {
-        List<Note> notes = await _db.Notes.Where(n => n.CanvasId == canvasId).ToListAsync();
+        List<NoteDTO> notes = await _db.Notes
+            .Where(n => n.CanvasId == canvasId)
+            .Select(n => new NoteDTO
+            {
+                Id = n.Id,
+                CanvasId = n.CanvasId,
+                Text = n.Text,
+                X = n.X,
+                Y = n.Y
+            })
+            .ToListAsync();
 
         return Ok(notes);
     }
@@ -27,45 +38,71 @@ public class NotesController : ControllerBase
     [HttpGet("notes/{noteId}")]
     public async Task<IActionResult> GetNoteById(int noteId)
     {
-        Note? note = await _db.Notes.Where(n => n.Id == noteId).FirstOrDefaultAsync();
+        NoteDTO? note = await _db.Notes
+            .Where(n => n.Id == noteId)
+            .Select(n => new NoteDTO
+            {
+                Id = n.Id,
+                CanvasId = n.CanvasId,
+                Text = n.Text,
+                X = n.X,
+                Y = n.Y
+            })
+            .FirstOrDefaultAsync();
+
         if (note == null) return NotFound();
 
         return Ok(note);
     }
 
     [HttpPost("canvas/{canvasId}/notes")]
-    public async Task<IActionResult> CreateNote(int canvasId, Note note)
+    public async Task<IActionResult> CreateNote(int canvasId, CreateNoteRequest dto)
     {
-        // this looks a bit ugly, but will soon get replaced by a DTO anyway
-        note.CanvasId = canvasId;
-        note.Canvas = null!;
+        Note note = new()
+        {
+            CanvasId = canvasId,
+            Text = dto.Text,
+            X = dto.X,
+            Y = dto.Y
+        };
 
         _db.Notes.Add(note);
         await _db.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetNoteById), new { id = canvasId }, note);
+        return CreatedAtAction(
+            nameof(GetNoteById),
+            new { id = canvasId },
+            new NoteDTO
+            {
+                Id = note.Id,
+                CanvasId = note.CanvasId,
+                Text = note.Text,
+                X = note.X,
+                Y = note.Y
+            }
+        );
     }
 
     [HttpPatch("notes/{noteId}/text")]
-    public async Task<IActionResult> UpdateNoteText(int noteId, Note note)
+    public async Task<IActionResult> UpdateNoteText(int noteId, UpdateNoteTextRequest dto)
     {
         Note? updateNote = await _db.Notes.FindAsync(noteId);
         if (updateNote == null) return NotFound();
 
-        updateNote.Text = note.Text;
+        updateNote.Text = dto.Text;
         await _db.SaveChangesAsync();
 
         return NoContent();
     }
 
     [HttpPatch("notes/{noteId}/position")]
-    public async Task<IActionResult> UpdateNotePosition(int noteId, Note note)
+    public async Task<IActionResult> UpdateNotePosition(int noteId, UpdateNotePosRequest dto)
     {
         Note? updateNote = await _db.Notes.FindAsync(noteId);
         if (updateNote == null) return NotFound();
 
-        updateNote.X = note.X;
-        updateNote.Y = note.Y;
+        updateNote.X = dto.X;
+        updateNote.Y = dto.Y;
         await _db.SaveChangesAsync();
 
         return NoContent();

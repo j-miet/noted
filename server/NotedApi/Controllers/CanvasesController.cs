@@ -6,6 +6,7 @@ using NotedApi.Features.Canvases;
 
 namespace NotedApi.Controllers;
 
+// TODO clean up controllers by moving their logic under Features/Notes/CanvasesService.cs
 [ApiController]
 [Route("api/canvas")]
 public class CanvasesController(NotedDbContext db) : ControllerBase
@@ -15,7 +16,13 @@ public class CanvasesController(NotedDbContext db) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllCanvases()
     {
-        List<Canvas> canvases = await _db.Canvases.ToListAsync();
+        List<CanvasDTO> canvases = await _db.Canvases
+            .Select(c => new CanvasDTO
+            {
+                Id = c.Id,
+                Name = c.Name
+            })
+            .ToListAsync();
 
         return Ok(canvases);
     }
@@ -23,7 +30,14 @@ public class CanvasesController(NotedDbContext db) : ControllerBase
     [HttpGet("{canvasId}")]
     public async Task<IActionResult> GetCanvasById(int canvasId)
     {
-        Canvas? canvas = await _db.Canvases.Where(c => c.Id == canvasId).FirstOrDefaultAsync();
+        CanvasDTO? canvas = await _db.Canvases
+            .Where(c => c.Id == canvasId)
+            .Select(c => new CanvasDTO
+            {
+                Id = c.Id,
+                Name = c.Name
+            })
+            .FirstOrDefaultAsync();
 
         if (canvas == null) return NotFound();
 
@@ -31,22 +45,35 @@ public class CanvasesController(NotedDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCanvas(Canvas canvas)
+    public async Task<IActionResult> CreateCanvas(CreateCanvasRequest dto)
     {
+        Canvas canvas = new()
+        {
+            Name = dto.Name
+        };
+
         _db.Canvases.Add(canvas);
         await _db.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetCanvasById), new { id = canvas.Id }, canvas);
+        return CreatedAtAction(
+            nameof(GetCanvasById),
+            new { id = canvas.Id },
+            new CanvasDTO
+            {
+                Id = canvas.Id,
+                Name = canvas.Name
+            }
+        );
     }
 
     [HttpPatch("{canvasId}/name")]
-    public async Task<IActionResult> UpdateCanvasName(int canvasId, Canvas canvas)
+    public async Task<IActionResult> UpdateCanvasName(int canvasId, UpdateCanvasRequest dto)
     {
         Canvas? updateCanvas = await _db.Canvases.FindAsync(canvasId);
 
         if (updateCanvas == null) return NotFound();
 
-        updateCanvas.Name = canvas.Name;
+        updateCanvas.Name = dto.Name;
         await _db.SaveChangesAsync();
 
         return NoContent();
