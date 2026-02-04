@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NotedApi.Features.Notes;
 using NotedApi.Features.Canvases;
 
-namespace NotedApi.Data;
+namespace NotedApi.Infrastructure.Data;
 
 // TODO move this under Persistence sublayer
 

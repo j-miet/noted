@@ -1,7 +1,7 @@
 using NotedApi.Features.Canvases;
 using NotedApi.Features.Notes;
 
-namespace NotedApi.Data;
+namespace NotedApi.Infrastructure.Data;
 
 /// <summary>
 /// Inserts default data into database

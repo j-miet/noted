@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NotedApi.Data;
+using NotedApi.Infrastructure.Data;
 using NotedApi.Exceptions;
 
 namespace NotedApi.Features.Canvases;
