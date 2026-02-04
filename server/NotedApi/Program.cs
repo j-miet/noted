@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using NotedApi.Data;
+using NotedApi.Infrastructure.Error;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,6 @@ builder.Services.AddDbContext<NotedDbContext>(options =>
 {
     options.UseSqlite("Data Source=noted.db");
 });
-
 
 var app = builder.Build();
 
@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseMiddleware<ExceptionHandler>();
 app.MapControllers();
 
 app.Run();
