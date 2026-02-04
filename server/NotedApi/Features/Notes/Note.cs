@@ -11,6 +11,6 @@ public class Note
     public int CanvasId { get; set; }
     public Canvas Canvas { get; set; } = null!;
     public string Text { get; set; } = "";
-    public int X { get; set; } = 300;
-    public int Y { get; set; } = 200;
+    public int X { get; set; }
+    public int Y { get; set; }
 }
