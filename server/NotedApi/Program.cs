@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 
-using NotedApi.Data;
+using NotedApi.Infrastructure.Data;
 using NotedApi.Infrastructure.Error;
+using NotedApi.Features.Canvases;
+using NotedApi.Features.Notes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,10 @@ builder.Services.AddDbContext<NotedDbContext>(options =>
 {
     options.UseSqlite("Data Source=noted.db");
 });
+
+// controller interfaces
+builder.Services.AddScoped<ICanvasesService, CanvasesService>();
+builder.Services.AddScoped<INotesService, NotesService>();
 
 var app = builder.Build();
 
