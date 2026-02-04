@@ -1,5 +1,6 @@
 namespace NotedApi.Features.Canvases;
 
-public record CreateCanvasRequest(
+public record CanvasResponse(
+    int Id,
     string Name
 );
