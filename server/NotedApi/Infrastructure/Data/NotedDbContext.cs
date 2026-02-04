@@ -5,6 +5,8 @@ using NotedApi.Features.Canvases;
 
 namespace NotedApi.Data;
 
+// TODO move this under Persistence sublayer
+
 /// <summary>
 /// Database context of Noted app
 /// </summary>
