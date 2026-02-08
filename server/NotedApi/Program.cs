@@ -13,6 +13,14 @@ builder.Services.AddDbContext<NotedDbContext>(options =>
 {
     options.UseSqlite("Data Source=noted.db");
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NotedClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+        // .AllowCredentials(); --add this if client credentials are needed in the future
+    });
+});
 
 // controller interfaces
 builder.Services.AddScoped<ICanvasesService, CanvasesService>();
@@ -20,7 +28,7 @@ builder.Services.AddScoped<INotesService, NotesService>();
 
 var app = builder.Build();
 
-// if database has no canvases, create default db structure
+// ---Remove this after frontend can send and receive data---
 using (IServiceScope scope = app.Services.CreateScope())
 {
     NotedDbContext dataBase = scope.ServiceProvider.GetRequiredService<NotedDbContext>();
@@ -35,6 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("NotedClient");
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandler>();
 app.MapControllers();
