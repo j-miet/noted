@@ -1,7 +1,7 @@
 # Project extras (temporary, remove this later)
 noted-draft
 noted.db
-**/*/Migrations
+**/Migrations
 
 # vscode
 .vscode
@@ -10,5 +10,5 @@ noted.db
 node_modules
 
 # ASP.NET Core
-server/**/*/bin
-server/**/*/obj
+**/bin
+**/obj
