@@ -1,0 +1,22 @@
+.canvaslist-page {
+  width: 400px;
+  height: 450px;
+  background-color: gray;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.canvaslist-page h3 {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.canvaslist-item {
+  display: flex;
+  padding: 0.6rem;
+  border-bottom: 1px solid #eee;
+}
+
+.canvaslist-addbutton {
+  align-items: end;
+}
