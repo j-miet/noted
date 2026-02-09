@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+
 using NotedApi.Infrastructure.Data;
 using NotedApi.Exceptions;
+using NotedApi.Utils;
 
 namespace NotedApi.Features.Canvases;
 
@@ -38,6 +40,8 @@ public class CanvasesService : ICanvasesService
 
     public async Task<CanvasResponse> CreateCanvasAsync(CreateCanvasRequest req)
     {
+        if (CheckUtils.NameCheck(req.Name) == "") throw new InvalidCanvasException("Invalid canvas name");
+
         Canvas canvas = new()
         {
             Name = req.Name
@@ -54,6 +58,8 @@ public class CanvasesService : ICanvasesService
 
     public async Task UpdateCanvasNameAsync(int canvasId, UpdateCanvasRequest req)
     {
+        if (CheckUtils.NameCheck(req.Name) == "") throw new InvalidCanvasException("Invalid canvas name");
+
         Canvas updateCanvas = await _db.Canvases.FindAsync(canvasId)
             ?? throw new NotFoundException("Canvas not found");
 
