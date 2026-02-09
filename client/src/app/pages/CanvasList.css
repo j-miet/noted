@@ -1,14 +1,19 @@
 .canvaslist-page {
+  position: relative;
   width: 400px;
   height: 450px;
   background-color: gray;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
+.canvaslist-page hr {
+  border: 2px solid rgb(202, 192, 192)
+}
 
 .canvaslist-page h3 {
-  margin-top: 1rem;
+  margin: 0.5rem 0 0.5rem 0;
   text-align: center;
+  color: antiquewhite;
 }
 
 .canvaslist-item {
@@ -17,6 +22,21 @@
   border-bottom: 1px solid #eee;
 }
 
-.canvaslist-addbutton {
-  align-items: end;
+.canvaslist-additem {
+  position: absolute;
+  padding: 5px 5px;
+  bottom: 5px;
+  left: 5px;
+}
+
+.canvaslist-updatename {
+  position: absolute;
+  right: 35px;
+  padding: 1px 3px 1px 3px;
+}
+
+.canvaslist-deleteitem {
+  position: absolute;
+  right: 10px;
+  padding: 1px 3px 1px 3px;
 }
