@@ -4,39 +4,68 @@
   height: 450px;
   background-color: gray;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
 }
-.canvaslist-page hr {
-  border: 2px solid rgb(202, 192, 192)
+.canvas-ui hr {
+  border: 2px solid rgba(164, 180, 209, 0.7)
 }
 
-.canvaslist-page h3 {
+.canvas-ui h3 {
   margin: 0.5rem 0 0.5rem 0;
   text-align: center;
   color: antiquewhite;
 }
 
-.canvaslist-item {
+.list-item {
   display: flex;
   padding: 0.6rem;
   border-bottom: 1px solid #eee;
 }
 
-.canvaslist-additem {
-  position: absolute;
-  padding: 5px 5px;
-  bottom: 5px;
-  left: 5px;
-}
-
-.canvaslist-updatename {
+.updatename {
   position: absolute;
   right: 35px;
   padding: 1px 3px 1px 3px;
 }
 
-.canvaslist-deleteitem {
+.deleteitem {
   position: absolute;
   right: 10px;
   padding: 1px 3px 1px 3px;
+}
+
+.general {
+  position: absolute;
+  width: 100%;
+  bottom: 80px;
+}
+
+.general hr {
+  border: 2px solid rgba(214, 176, 176, 0.7)
+}
+
+.additem {
+  position: absolute;
+  display: flex;
+  margin: 10px;
+  padding: 5px;
+}
+
+.pagination {
+  position: absolute;
+  width: 90%;
+  bottom: 5px;
+  margin-left: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination button {
+  padding: 1px 5px 1px 5px;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

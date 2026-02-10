@@ -7,12 +7,27 @@ import { nameCheck } from "../../utils/inputCheck.ts";
 
 export default function CanvasPage() {
   const [canvases, setCanvases] = useState<Canvas[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // load all canvases when page is refreshed, but not during rerenders
+  useEffect(() => {
+    getAllCanvases();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages || 1);
+    }
+  }, [currentPage, totalPages]);
 
   const getAllCanvases = async () => {
     try {
-      const data = await canvaslistApi.GetAllCanvases();
+      const data = await canvaslistApi.GetAllCanvases(currentPage, 7);
 
-      setCanvases(data);
+      setCanvases(data.canvases);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error(error);
     }
@@ -57,43 +72,63 @@ export default function CanvasPage() {
     }
   };
 
-  // load all canvases when page is refreshed, but not during rerenders
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    getAllCanvases();
-  }, []);
-
   return (
     <div className="canvaslist-page">
-      <h3>My canvases</h3>
-      <hr></hr>
-      <ul className="canvaslist-list">
-        {canvases.map((canvas) => {
-          if (!canvas) return null;
+      <div className="canvas-ui">
+        <h3>My canvases</h3>
+        <hr></hr>
+        <ul>
+          {canvases.map((canvas) => {
+            if (!canvas) return null;
 
-          return (
-            <li key={canvas.id} className="canvaslist-item">
-              {canvas.name}
+            return (
+              <li key={canvas.id} className="list-item">
+                {canvas.name}
 
-              <button
-                onClick={() => updateCanvasName(canvas)}
-                className="canvaslist-updatename"
-              >
-                Rename
-              </button>
-              <button
-                onClick={() => deleteCanvas(canvas)}
-                className="canvaslist-deleteitem"
-              >
-                X
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <button onClick={createCanvas} className="canvaslist-additem">
-        New Canvas
-      </button>
+                <button
+                  onClick={() => updateCanvasName(canvas)}
+                  className="updatename"
+                >
+                  Rename
+                </button>
+                <button
+                  onClick={() => deleteCanvas(canvas)}
+                  className="deleteitem"
+                >
+                  X
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="general">
+        <hr></hr>
+        <button onClick={createCanvas} className="additem">
+          New Canvas
+        </button>
+      </div>
+
+      <div className="pagination">
+        <button
+          disabled={currentPage <= 1}
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          className="prev-button"
+        >
+          {"<-"}
+        </button>
+        <span>
+          Page {currentPage} / {totalPages}
+        </span>
+        <button
+          disabled={currentPage >= totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          className="next-button"
+        >
+          {"->"}
+        </button>
+      </div>
     </div>
   );
 }
