@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using NotedApi.Infrastructure.Data;
 using NotedApi.Exceptions;
 using NotedApi.Utils;
+using NotedApi.Features.Canvases.Dtos;
+
 
 namespace NotedApi.Features.Canvases;
 
@@ -15,14 +17,22 @@ public class CanvasesService : ICanvasesService
         _db = db;
     }
 
-    public async Task<List<CanvasResponse>> GetAllCanvasesAsync()
+    public async Task<CanvasPaginatedResponse> GetAllCanvasesAsync(GetCanvasRequest req)
     {
-        return await _db.Canvases
+        List<CanvasResponse> canvases = await _db.Canvases
+            .Skip((req.CurrentPage - 1) * req.CanvasLimit)
+            .Take(req.CanvasLimit)
+            .OrderBy(r => r.Id)
             .Select(r => new CanvasResponse(
                 r.Id,
                 r.Name
             ))
             .ToListAsync();
+
+        int count = await _db.Canvases.CountAsync();
+        int totalPages = (int)Math.Ceiling(Math.Max(1, count) / (double)req.CanvasLimit);
+
+        return new CanvasPaginatedResponse(canvases, count, req.CurrentPage, totalPages);
     }
 
     public async Task<CanvasResponse> GetCanvasByIdAsync(int canvasId)

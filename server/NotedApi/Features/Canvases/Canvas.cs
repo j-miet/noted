@@ -3,7 +3,7 @@ using NotedApi.Features.Notes;
 namespace NotedApi.Features.Canvases;
 
 /// <summary>
-/// Canvas model
+/// Canvas model for database
 /// </summary>
 public class Canvas
 {
