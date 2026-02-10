@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using NotedApi.Features.Canvases;
+using NotedApi.Features.Canvases.Dtos;
 
 namespace NotedApi.Controllers;
 
@@ -15,10 +16,11 @@ public class CanvasesController : ControllerBase
         _canvases = canvases;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllCanvases()
+    [HttpGet("page={page}&canvaslimit={limit}")]
+    public async Task<IActionResult> GetAllCanvases(int page, int limit)
     {
-        return Ok(await _canvases.GetAllCanvasesAsync());
+        GetCanvasRequest req = new(page, limit);
+        return Ok(await _canvases.GetAllCanvasesAsync(req));
     }
 
     [HttpGet("{canvasId}")]
