@@ -5,8 +5,8 @@ import { apiRequest } from "./clientApi";
  * API for canvas listing page's requests
  */
 export const canvaslistApi = {
-  GetAllCanvases() {
-    return apiRequest("/api/canvas", {
+  GetAllCanvases(page: number, limit: number) {
+    return apiRequest(`/api/canvas/page=${page}&canvaslimit=${limit}`, {
       method: "GET",
     });
   },
