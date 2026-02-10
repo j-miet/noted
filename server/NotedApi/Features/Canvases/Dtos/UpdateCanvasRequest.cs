@@ -1,4 +1,4 @@
-namespace NotedApi.Features.Canvases;
+namespace NotedApi.Features.Canvases.Dtos;
 
 public record UpdateCanvasRequest(
     string Name
