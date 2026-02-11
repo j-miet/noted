@@ -1,4 +1,11 @@
-.canvaslist-page {
+.canvases-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-card {
   position: relative;
   width: 400px;
   height: 450px;
@@ -6,20 +13,31 @@
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
 }
-.canvas-ui hr {
+
+hr {
   border: 2px solid rgba(164, 180, 209, 0.7)
 }
 
-.canvas-ui h3 {
+.ui h3 {
   margin: 0.5rem 0 0.5rem 0;
   text-align: center;
   color: antiquewhite;
 }
 
 .list-item {
+  text-decoration: none;
   display: flex;
   padding: 0.6rem;
   border-bottom: 1px solid #eee;
+}
+
+.list-link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.list-link:hover {
+  color: black;
 }
 
 .updatename {
@@ -38,10 +56,6 @@
   position: absolute;
   width: 100%;
   bottom: 80px;
-}
-
-.general hr {
-  border: 2px solid rgba(214, 176, 176, 0.7)
 }
 
 .additem {
