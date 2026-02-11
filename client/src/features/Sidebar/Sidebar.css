@@ -1,0 +1,16 @@
+.sidebar {
+  position: relative;
+  width: 8rem;
+  height: calc(100vh - 80px);
+  background-color: #19202b;
+  color: white;
+  padding: 1rem;
+  border-right: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar button {
+  margin: 1rem 1rem;
+  padding: 0.5rem 0.5rem;
+}
