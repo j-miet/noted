@@ -75,7 +75,7 @@ export default function HomePage() {
 
   return (
     <div className="canvases-page">
-      <section className="canvas-card">
+      <div className="canvas-card">
         <div className="ui">
           <h3>My canvases</h3>
           <hr></hr>
@@ -133,7 +133,7 @@ export default function HomePage() {
             {"->"}
           </button>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
