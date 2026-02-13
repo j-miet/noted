@@ -1,3 +1,5 @@
+using NotedApi.Features.Notes.Dtos;
+
 namespace NotedApi.Features.Notes;
 
 public interface INotesService

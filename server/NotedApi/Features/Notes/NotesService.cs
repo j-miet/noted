@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NotedApi.Infrastructure.Data;
 using NotedApi.Exceptions;
 using NotedApi.Features.Notes;
+using NotedApi.Features.Notes.Dtos;
 
 public class NotesService : INotesService
 {

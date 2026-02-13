@@ -20,9 +20,9 @@ public class CanvasesService : ICanvasesService
     public async Task<CanvasPaginatedResponse> GetAllCanvasesAsync(GetCanvasRequest req)
     {
         List<CanvasResponse> canvases = await _db.Canvases
+            .OrderBy(r => r.Name)
             .Skip((req.CurrentPage - 1) * req.CanvasLimit)
             .Take(req.CanvasLimit)
-            .OrderBy(r => r.Id)
             .Select(r => new CanvasResponse(
                 r.Id,
                 r.Name

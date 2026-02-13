@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using NotedApi.Features.Notes;
+using NotedApi.Features.Notes.Dtos;
 
 namespace NotedApi.Controllers;
 
