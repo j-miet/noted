@@ -1,21 +1,34 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
-import HomePage from "./pages/Canvases";
 import App from "./App";
 import CanvasPage from "./pages/Canvas";
+import { canvasesApi } from "../api/canvasesApi";
+import CanvasesPage from "./pages/Canvases";
 
 const router = createBrowserRouter([
   {
-    path: "canvases",
+    path: "/",
     Component: App,
     children: [
-      { index: true, Component: HomePage },
-      { path: ":canvasId", Component: CanvasPage },
+      { index: true, element: <Navigate to="/canvases" replace /> },
+      {
+        path: "canvases",
+        Component: CanvasesPage,
+        loader: () => {
+          return { name: "canvases" };
+        },
+      },
+      {
+        path: "canvases/:canvasId",
+        Component: CanvasPage,
+        loader: async ({ params }) => {
+          const canvas = await canvasesApi.GetCanvasById(
+            Number(params.canvasId),
+          );
+          return { name: canvas.name, id: canvas.id };
+        },
+      },
     ],
-  },
-  {
-    path: "*",
-    Component: App,
   },
 ]);
 
