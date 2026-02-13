@@ -5,7 +5,6 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <button>Note</button>
-      <button>...</button>
     </aside>
   );
 }
