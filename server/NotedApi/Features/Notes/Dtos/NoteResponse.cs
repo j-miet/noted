@@ -1,4 +1,4 @@
-namespace NotedApi.Features.Notes;
+namespace NotedApi.Features.Notes.Dtos;
 
 public record NoteResponse(
     int Id,
