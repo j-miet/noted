@@ -9,6 +9,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: App,
+    loader: () => {
+      return { name: "canvases" };
+    },
     children: [
       { index: true, element: <Navigate to="/canvases" replace /> },
       {
