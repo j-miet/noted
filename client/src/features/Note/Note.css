@@ -1,0 +1,12 @@
+.canvas-note {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  min-height: 120px;
+  background-color: rgb(146, 51, 51);
+  border: 1px solid #e0d98c;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: grab;
+}
