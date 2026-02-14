@@ -1,4 +1,4 @@
-import type { Canvas } from "../types/pages";
+import type { CanvasObject } from "../types/types";
 import { apiRequest } from "./clientApi";
 
 /**
@@ -26,7 +26,7 @@ export const canvasesApi = {
     });
   },
 
-  UpdateCanvasName(canvas: Canvas) {
+  UpdateCanvasName(canvas: CanvasObject) {
     return apiRequest(`/api/canvas/${canvas.id}/name`, {
       method: "PATCH",
       body: JSON.stringify({
