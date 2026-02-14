@@ -9,7 +9,7 @@ export default function CanvasName() {
   const urlParams = useParams();
 
   useEffect(() => {
-    GetCanvasNameFromRoute();
+    if (urlParams.canvasId) GetCanvasNameFromRoute();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -22,7 +22,7 @@ export default function CanvasName() {
 
       SetName(canvas.name);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
