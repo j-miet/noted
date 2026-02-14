@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-
-import "./Canvases.css";
-import type { Canvas } from "../../types/pages.ts";
-import { canvasesApi } from "../../api/canvasesApi.ts";
-import { nameCheck } from "../../utils/inputCheck.ts";
 import { Link } from "react-router";
 
-export default function HomePage() {
-  const [canvases, setCanvases] = useState<Canvas[]>([]);
+import "./Canvases.css";
+import type { CanvasObject } from "../../types/types.ts";
+import { canvasesApi } from "../../api/canvasesApi.ts";
+import { nameCheck } from "../../utils/inputCheck.ts";
+import Topbar from "../../features/Topbar/Topbar.tsx";
+
+export default function CanvasesPage() {
+  const [canvases, setCanvases] = useState<CanvasObject[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -47,7 +48,7 @@ export default function HomePage() {
     }
   };
 
-  const updateCanvasName = async (canvas: Canvas): Promise<void> => {
+  const updateCanvasName = async (canvas: CanvasObject): Promise<void> => {
     try {
       const name = nameCheck(prompt(`Rename canvas '${canvas.name}':`));
       if (name === "") return;
@@ -61,7 +62,7 @@ export default function HomePage() {
     }
   };
 
-  const deleteCanvas = async (canvas: Canvas): Promise<void> => {
+  const deleteCanvas = async (canvas: CanvasObject): Promise<void> => {
     try {
       if (!confirm(`Delete canvas '${canvas.name}'?`)) return;
 
@@ -75,65 +76,68 @@ export default function HomePage() {
 
   return (
     <div className="canvases-page">
-      <div className="canvas-card">
-        <div className="ui">
-          <h3>My canvases</h3>
-          <hr></hr>
-          <ul>
-            {canvases.map((canvas) => {
-              if (!canvas) return null;
+      <Topbar></Topbar>
+      <main>
+        <div className="canvas-card">
+          <div className="ui">
+            <h3>My canvases</h3>
+            <hr></hr>
+            <ul>
+              {canvases.map((canvas) => {
+                if (!canvas) return null;
 
-              return (
-                <li key={canvas.id} className="list-item">
-                  <Link to={`/canvases/${canvas.id}`} className="list-link">
-                    {canvas.name}
-                  </Link>
+                return (
+                  <li key={canvas.id} className="list-item">
+                    <Link to={`/canvases/${canvas.id}`} className="list-link">
+                      {canvas.name}
+                    </Link>
 
-                  <button
-                    onClick={() => updateCanvasName(canvas)}
-                    className="updatename"
-                  >
-                    Rename
-                  </button>
-                  <button
-                    onClick={() => deleteCanvas(canvas)}
-                    className="deleteitem"
-                  >
-                    X
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                    <button
+                      onClick={() => updateCanvasName(canvas)}
+                      className="updatename"
+                    >
+                      Rename
+                    </button>
+                    <button
+                      onClick={() => deleteCanvas(canvas)}
+                      className="deleteitem"
+                    >
+                      X
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="general">
+            <hr></hr>
+            <button onClick={createCanvas} className="additem">
+              New Canvas
+            </button>
+          </div>
+
+          <div className="pagination">
+            <button
+              disabled={currentPage <= 1}
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              className="prev-button"
+            >
+              {"<-"}
+            </button>
+            <span>
+              Page {currentPage} / {totalPages}
+            </span>
+            <button
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              className="next-button"
+            >
+              {"->"}
+            </button>
+          </div>
         </div>
-
-        <div className="general">
-          <hr></hr>
-          <button onClick={createCanvas} className="additem">
-            New Canvas
-          </button>
-        </div>
-
-        <div className="pagination">
-          <button
-            disabled={currentPage <= 1}
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="prev-button"
-          >
-            {"<-"}
-          </button>
-          <span>
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            disabled={currentPage >= totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            className="next-button"
-          >
-            {"->"}
-          </button>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

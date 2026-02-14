@@ -1,5 +1,9 @@
 .canvases-page {
   height: 100vh;
+}
+
+.canvases-page main {
+  height: calc(100vh - var(--topbar-height));
   display: flex;
   justify-content: center;
   align-items: center;
